@@ -5,10 +5,10 @@
 
 require_dependency 'auth/oauth2_authenticator'
 
-gem 'macaddr', '1.0.0'
-gem 'uuid', '2.3.7'
-gem 'ruby-saml', '1.3.1'
-gem "omniauth-saml", '1.6.0'
+gem 'macaddr', '1.7.1'
+gem 'uuid', '2.3.8'
+gem 'ruby-saml', '1.4.2'
+gem 'omniauth-saml', '1.7.0'
 
 request_method = GlobalSetting.try(:saml_request_method) || 'get'
 
@@ -18,9 +18,8 @@ class SamlAuthenticator < ::Auth::OAuth2Authenticator
                       :name => 'saml',
                       :issuer => Discourse.base_url,
                       :idp_sso_target_url => GlobalSetting.saml_target_url,
-                      :idp_cert_fingerprint => GlobalSetting.try(:saml_cert_fingerprint),
                       :idp_cert => GlobalSetting.try(:saml_cert),
-                      :attribute_statements => { :nickname => ['screenName'] },
+                      :attribute_statements => { :nickname => ['samAccountName'] },
                       :assertion_consumer_service_url => Discourse.base_url + "/auth/saml/callback",
                       :custom_url => (GlobalSetting.try(:saml_request_method) == 'post') ? "/discourse_saml" : nil
   end
